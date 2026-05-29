@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Personal Assistant</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}"/>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+   <h1>AI Personal Assistant</h1>
+
+   <div class="main">
+        <div class="container">
+                <h2>Ask anything </h2>
+                <form  id="askForm" method="POST" action="/server">
+                    <div class="textarea-wrapper">
+                        <textarea id="Askquery" name="query" placeholder="Ask me anything...." required></textarea>
+                        <button type="button" id="micBtn" class="mic-inside-btn" title="Listen via Voice">🎙️</button>
+                    </div>
+
+                    <span>
+                        <button type="submit">Ask Chatgpt</button>
+                    </span>
+                    <p id="ans-loading" style="display: none;">Processing....</p>
+                    <p id="answer"></p>
+                </form>
+        </div>       
+    <hr>
+        <div class="container">
+            <h2>Summarize Email </h2>   
+            <form id="emailForm"  method="POST" action="/server">
+                <textarea id="email" name="email" placeholder="Paste your email here...." required></textarea>
+                <button>Summarize</button>
+                <p id="summary-loading" style="display: none;">Processing....</p>
+                <p id="summary"></p>
+            </form>
+        </div>
+    </div>
+   
+    <!-- // --- 1. VOICE RECOGNITION FEATURE --- -->
+    <script>
+    const micBtn = document.getElementById("micBtn");
+    const queryInput = document.getElementById("Askquery");
+
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        
+        recognition.continuous = false;
+        recognition.lang = 'en-IN'; // Optimized for Indian accents (supports mixed Hindi/English)
+        recognition.interimResults = false;
+
+        micBtn.addEventListener("click", () => {
+        recognition.start();
+        micBtn.innerHTML = "🔴"; // Changes to a recording dot when clicked
+        micBtn.classList.add("recording");
+    });
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        queryInput.value = transcript;
+        document.getElementById("askForm").requestSubmit(); // Auto-submits form
+    };
+
+    recognition.onend = () => {
+        micBtn.innerHTML = "🎤"; // Resets back to clean mic icon
+        micBtn.classList.remove("recording");
+    };
+
+    recognition.onerror = (err) => {
+        console.error("Speech error: ", err);
+        micBtn.innerHTML = "🎤"; // Resets back to clean mic icon on error
+        micBtn.classList.remove("recording");
+    };
+    } else {
+        micBtn.style.display = "none"; // Hide button if browser doesn't support speech
+    }
+    </script>
+
+    <!-- // --- 2. ASYNC FORM SUBMISSIONS --- -->
+   <script>
+    document.getElementById("askForm").onsubmit = async (e) => {
+        e.preventDefault();
+        let formData = new FormData(e.target);
+
+        let loading = document.getElementById("ans-loading");
+        loading.style.display = "block";   // show loader
+
+        let res = await fetch("/ask", {
+            method: "POST",
+            body: formData
+        });
+
+        let data = await res.json();
+        document.getElementById("answer").innerHTML = marked.parse(data.response);
+
+        document.getElementById("Askquery").value = "";
+
+        loading.style.display = "none";   // hide loader
+    };
+
+    document.getElementById("emailForm").onsubmit = async (e) => {
+        e.preventDefault();
+        let formData = new FormData(e.target);
+
+        let loading = document.getElementById("summary-loading");
+        loading.style.display = "block";
+
+        let res = await fetch("/summarize", {
+            method: "POST",
+            body: formData
+        });
+
+        let data = await res.json();
+        document.getElementById("answer").innerHTML = marked.parse(data.response);
+
+        document.getElementById("Askquery").value = "";
+
+        loading.style.display = "none";   // hide loader
+    };
+   </script>
+
+</body>
+</html>

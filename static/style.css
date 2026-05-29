@@ -1,0 +1,213 @@
+body {
+    text-align:center;
+    background-image: url('https://plus.unsplash.com/premium_photo-1725907643560-8d2dc0124337?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8dmlydHVhbCUyMGFzc2lzdGFudHxlbnwwfHwwfHx8MA%3D%3D'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Keeps background locked while scrolling */
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding:0;
+}
+
+h1{
+    color: red;
+    font-size: 2.5rem;               
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    margin-bottom: 10px;
+}
+
+.main {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px; /* Adds space between the two containers */
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* .container{
+    max-width: 800px;
+    margin: auto;
+    background: rgba(206, 170, 10, 0.65);
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+} */
+
+.container {
+    flex: 1;
+    min-height: 400px;
+    max-width: 500px; /* Changed from 800px to fit side-by-side */
+    margin: 20px;       /* Changed from auto */
+    background: rgba(206, 170, 10, 0.65);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+#Askquery {
+    height: 40px; /* Increased slightly from 30px for a better layout fit */
+    width: 100%;  /* Changed from 500px */
+    box-sizing: border-box; /* Keeps padding inside the box boundaries */
+    border-radius: 20px;
+    padding: 8px 45px 8px 15px;
+    margin: 0 ;
+}
+
+#email {
+    height: 150px;
+    width: 100%;  /* Changed from 600px */
+    box-sizing: border-box;
+    border-radius: 20px;
+    padding: 5px 0 0 10px;
+    margin: 0 auto 15px; 
+}
+
+#answer, #summary {
+    max-height: 250px;     /* 1. Sets the maximum height before scrolling starts */
+    overflow-y: auto;
+    min-height: 30px;
+    width: 100%;  /* Changed from 770px */
+    box-sizing: border-box;
+    margin-top: 20px;
+    padding: 12px;
+    background: white;
+    color: black;
+    border-left: 4px solid #4a90e2;
+    border-radius: 15px;
+    text-align: left;
+}
+
+h2{
+    color:rgb(70, 4, 81);
+    font-size: 1.5rem;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+/* #Askquery{
+    height: 30px;
+    width:500px;
+    border-radius: 20px;
+    padding:5px 0 0 10px;
+    margin: 0 auto 10px;
+} */
+
+#Askquery:focus {
+    width: 80%;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+/* #email{
+    height: 150px;
+    width:600px;
+    border-radius: 20px;
+    padding:5px 0 0 10px;
+    margin: 0 auto 15px; 
+} */
+
+#email:focus {
+    border-color: #4a90e2;
+    outline: none;
+}
+
+/* Tweaks to clean up spacing inside the AI response boxes */
+#answer p, #summary p {
+    margin-bottom: 12px;
+}
+
+#answer ul, #summary ul, #answer ol, #summary ol {
+    margin-left: 20px;
+    margin-bottom: 12px;
+    text-align: left;
+}
+
+#answer li, #summary li {
+    margin-bottom: 6px;
+}
+
+button{
+    display:inline-block;
+    padding: 10px 75px 10px 75px;
+    margin:10px;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px ;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+button:hover{
+    box-shadow: 0 8px 16px ;
+}
+
+button:active{
+    background: #357abd;
+}
+
+/* Container that holds both elements relative to each other */
+.textarea-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto 15px; /* Centers the whole unit and adds space below it */
+}
+
+/* Forces the mic to snap inside the rightmost end of the textarea */
+.mic-inside-btn {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%); /* Centers the icon perfectly vertically */
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    transition: transform 0.2s ease;
+    z-index: 5; /* Ensures the icon stays clickable on top of the textarea */
+}
+
+/* Micro-animations to keep the interactive feel premium */
+.mic-inside-btn:hover {
+    transform: translateY(-50%) scale(1.2);
+}
+
+.mic-inside-btn.recording {
+    animation: insidePulse 1.2s infinite;
+}
+
+@keyframes insidePulse {
+    0% { transform: translateY(-50%) scale(1); opacity: 1; }
+    50% { transform: translateY(-50%) scale(1.2); opacity: 0.3; }
+    100% { transform: translateY(-50%) scale(1); opacity: 1; }
+}
+
+/* #answer, #summary {
+    min-height: 30px;
+    width:770px;
+    margin-top: 20px;
+    padding: 12px;
+    background: white;
+    color:black;
+    border-left: 4px solid #4a90e2;
+    border-radius: 15px;
+} */
+
+/* hr {
+    margin: 30px 0;
+    border: none;
+    border-top: 1px solid #eee;
+} */
+
+hr {
+    display: none;
+}
